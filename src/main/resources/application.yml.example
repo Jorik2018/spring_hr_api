@@ -1,0 +1,14 @@
+server:
+  port: 9090
+spring:
+  datasource:
+    url: 
+    username: 
+    password: 
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: none
+      #ddl-auto: update
