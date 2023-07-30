@@ -1,0 +1,14 @@
+server:
+  port: 9090
+spring:
+  datasource:
+    url: jdbc:mysql://190.119.114.163:3306/production
+    username: supersgtii
+    password: A1_supabase
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: none
+      #ddl-auto: update

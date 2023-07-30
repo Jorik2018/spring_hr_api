@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0624bb0d-ab12-40af-82c1-da439c387d2e">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="style1">
+		<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+			<topPen lineWidth="0.25"/>
+			<leftPen lineWidth="0.25"/>
+			<bottomPen lineWidth="0.25"/>
+			<rightPen lineWidth="0.25"/>
+		</box>
+	</style>
+	<style name="top">
+		<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+			<topPen lineWidth="0.25"/>
+		</box>
+	</style>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="fecFin" class="java.util.Date">
+		<fieldDescription><![CDATA[fecFin]]></fieldDescription>
+	</field>
+	<field name="fecIni" class="java.util.Date">
+		<fieldDescription><![CDATA[fecIni]]></fieldDescription>
+	</field>
+	<field name="fecSoli" class="java.util.Date">
+		<fieldDescription><![CDATA[fecSoli]]></fieldDescription>
+	</field>
+	<field name="worker" class="org.isobit.directory.model.People">
+		<fieldDescription><![CDATA[worker]]></fieldDescription>
+	</field>
+	<field name="nombreCompleto" class="java.lang.String">
+		<fieldDescription><![CDATA[worker.fullName]]></fieldDescription>
+	</field>
+	<field name="numeroPndid" class="java.lang.String">
+		<fieldDescription><![CDATA[worker.code]]></fieldDescription>
+	</field>
+	<field name="nroSoli" class="java.lang.String"/>
+	<field name="codMovi" class="java.lang.String">
+		<fieldDescription><![CDATA[codMovi]]></fieldDescription>
+	</field>
+	<field name="detalle" class="java.lang.String">
+		<fieldDescription><![CDATA[detalle]]></fieldDescription>
+	</field>
+	<group name="peopleCode">
+		<groupExpression><![CDATA[$F{numeroPndid}]]></groupExpression>
+		<groupHeader>
+			<band height="36">
+				<textField>
+					<reportElement x="0" y="0" width="555" height="12" uuid="e99149e1-ee62-472c-bd4c-bfebfdcd689f"/>
+					<textElement>
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{numeroPndid}+": "+$F{nombreCompleto}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="style1" x="215" y="24" width="80" height="12" uuid="ba25dac3-1f60-4160-bc99-8fa3308ba2cd"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[DESDE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="style1" x="295" y="24" width="80" height="12" uuid="cf8f53c9-c905-4eb8-97bf-11ea1f0e989c"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[HASTA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="style1" x="30" y="24" width="105" height="12" uuid="6ca7fbe2-54c3-499c-bd2f-0a7dcad42f8e"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[DOCUMENTO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="style1" x="135" y="24" width="80" height="12" uuid="7fc69f01-dbcb-459d-9f76-7323208dbb3d"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[FECHA SOLICITUD]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="style1" x="0" y="24" width="30" height="12" uuid="8164d07f-5947-4100-90b1-2c3b5533c39b"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nº]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="style1" mode="Transparent" x="375" y="24" width="180" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="c4cf18bb-972e-4c20-91a1-ae73cb557b8d"/>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Arial" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[DETALLE]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="17" uuid="be2771ca-c7ae-4336-9fde-dc37b339795b"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE LICENCIAS DE PERSONAL]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement style="style1" x="215" y="0" width="80" height="12" uuid="0626d313-18c8-4f2d-96ea-361c9dc4b417"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecIni}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement style="style1" x="295" y="0" width="80" height="12" uuid="cfa82aa4-6916-4291-91dc-7c4f9fe2d5fa"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecFin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="style1" x="30" y="0" width="105" height="12" uuid="b8190913-0f29-4383-9ec1-a1f779c5c90b"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nroSoli}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement style="style1" x="135" y="0" width="80" height="12" uuid="92802a57-bcf8-4979-926e-127cb0c6decc"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecSoli}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement style="style1" mode="Transparent" x="0" y="0" width="30" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="a977adde-6b45-4f66-a0f9-02a5b70df89a"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{peopleCode_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement style="style1" mode="Transparent" x="375" y="0" width="180" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="bfacbe10-4f1f-4eb2-bdbf-62275adae19c"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codMovi}+": "+$F{detalle}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement style="top" x="0" y="15" width="555" height="15" uuid="e38decf8-6b24-413f-bbaf-43268f2f7dfb"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[GOBIERNO REGIONAL DE ANCASH]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

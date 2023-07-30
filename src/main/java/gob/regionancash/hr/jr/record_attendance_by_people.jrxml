@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" columnCount="3" pageWidth="595" pageHeight="842" columnWidth="185" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8b3d10ce-f14e-4915-915b-215f6dce0997">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="style1">
+		<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+			<pen lineWidth="0.25"/>
+			<topPen lineWidth="0.25"/>
+			<leftPen lineWidth="0.25"/>
+			<bottomPen lineWidth="0.25"/>
+			<rightPen lineWidth="0.25"/>
+		</box>
+	</style>
+	<style name="top">
+		<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+			<topPen lineWidth="0.25"/>
+		</box>
+	</style>
+	<parameter name="PEOPLE" class="org.isobit.directorio.model.People"/>
+	<parameter name="FORMAT_MONTH" class="java.text.SimpleDateFormat">
+		<defaultValueExpression><![CDATA[new java.text.SimpleDateFormat("MMMM")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="from" class="java.util.Date"/>
+	<parameter name="to" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="FORMAT_DATE" class="java.text.SimpleDateFormat">
+		<defaultValueExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/YYYY")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FORMAT_DAY" class="java.text.SimpleDateFormat">
+		<defaultValueExpression><![CDATA[new java.text.SimpleDateFormat("dd-EEE")]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="dateTime" class="java.util.Date">
+		<fieldDescription><![CDATA[dateTime]]></fieldDescription>
+	</field>
+	<field name="ext" class="java.lang.Object">
+		<fieldDescription><![CDATA[ext]]></fieldDescription>
+	</field>
+	<group name="people" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[""]]></groupExpression>
+		<groupHeader>
+			<band height="13">
+				<textField isStretchWithOverflow="true">
+					<reportElement style="style1" stretchType="RelativeToTallestObject" x="0" y="0" width="51" height="13" uuid="d63fc0d8-bdd7-41ec-85ee-6c12e6c36262"/>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{PEOPLE}.getNumeroPndid()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="style1" stretchType="RelativeToTallestObject" x="51" y="0" width="134" height="13" uuid="21fda201-7d18-4c12-b248-f37ec0f01a60"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{PEOPLE}.getNombreCompleto()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="year" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{dateTime}.getYear()]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="month" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{dateTime}.getMonth()]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="day">
+		<groupExpression><![CDATA[$F{dateTime}.getDay()]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band height="14"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="17" uuid="5fab3b51-2bca-4662-ab27-551c360d284a"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE ASISTENCIA DE PERSONAL]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="28" width="555" height="11" uuid="8e619cd6-53f4-4018-8ebb-5e5feb807c40"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($P{from}!=null?"DESDE="+$P{FORMAT_DATE}.format($P{from})+"  ":"")+($P{to}!=null?"HASTA="+$P{FORMAT_DATE}.format($P{to}):"")]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="13" splitType="Stretch">
+			<staticText>
+				<reportElement style="style1" x="149" y="0" width="36" height="13" uuid="00a1309a-058f-43a0-9290-499d9cab7429"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HORA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="style1" x="113" y="0" width="36" height="13" uuid="2c678b03-9cab-4ad2-ab47-9603322890f1"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="style1" x="51" y="0" width="62" height="13" uuid="096a1b36-34c4-4487-87e5-3996ad6ca720"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MES]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField pattern="HH:mm">
+				<reportElement style="style1" x="149" y="0" width="36" height="13" uuid="07662624-ed13-4f15-9c65-cea8df01b665"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dateTime}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement style="style1" isPrintRepeatedValues="false" x="113" y="0" width="36" height="13" isPrintInFirstWholeBand="true" uuid="52ce470a-9064-4883-9e2b-3c74e1c05db5"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FORMAT_DAY}.format($F{dateTime}).toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMM">
+				<reportElement style="style1" isPrintRepeatedValues="false" x="51" y="0" width="62" height="13" isPrintInFirstWholeBand="true" uuid="5b055159-3c09-464e-9aa0-8600542a2c92"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FORMAT_MONTH}.format($F{dateTime}).toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy">
+				<reportElement style="style1" isPrintRepeatedValues="false" x="0" y="0" width="51" height="13" isPrintInFirstWholeBand="true" uuid="91ccdda6-0c02-43ae-a2ba-86c2e417e9e5"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dateTime}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement style="top" x="0" y="15" width="555" height="15" uuid="53924b2a-e052-4667-ad7d-f28dd1fc8811"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[GOBIERNO REGIONAL DE ANCASH]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
