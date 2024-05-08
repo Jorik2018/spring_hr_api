@@ -18,7 +18,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import javax.sql.DataSource;
 
-import org.isobit.app.service.UserFacade;
+import org.isobit.app.service.UserService;
 import org.isobit.directory.model.People;
 import org.isobit.directory.service.PeopleFacade;
 import org.isobit.util.AbstractFacade;
@@ -35,7 +35,7 @@ public class LicenseFacadeImpl implements LicenseFacade {
     private EntityManager em;
 
     @Autowired
-    private UserFacade userFacade;
+    private UserService userFacade;
 
     @Override
     public List<License> load(int first, int pageSize, String sortField, Map<String, Object> filters) {
@@ -382,6 +382,7 @@ public class LicenseFacadeImpl implements LicenseFacade {
                 filters.put("laborRegime", "CAS DIRECTIVOS");
                 break;
         }
+
         List<Object[]> l = em.createQuery("SELECT "
                 + "pn.code,"
                 + "pn.fullName,"
@@ -391,9 +392,11 @@ public class LicenseFacadeImpl implements LicenseFacade {
                 + "CONCAT(dt.name,' ',de.name),"
                 + "po.name,"
                 + "GROUP_CONCAT(li.nroSoli,', '),"
-                + "sum(CASE WHEN li.codMovi=19 THEN li.days ELSE null END),\n"
-                + "sum(CASE WHEN li.codMovi=20 THEN li.days ELSE null END), \n"
-                + "sum(CASE WHEN li.codMovi=21 THEN li.days ELSE null END),"
+                + "sum(CASE WHEN li.codMovi='20' THEN li.days ELSE null END), \n"
+                + "sum(CASE WHEN li.codMovi='21' THEN li.days ELSE null END), \n"
+                + "sum(CASE WHEN li.codMovi='22' THEN li.days ELSE null END), \n"
+                + "sum(CASE WHEN li.codMovi='23' THEN li.days ELSE null END), \n"
+                + "sum(CASE WHEN li.codMovi='24' THEN li.days ELSE null END), \n"
                 + "floor(datediff(curdate(),em.incomeDate) / 365) \n"
                 + "FROM Contract c "
                 + "JOIN Employee em ON em.peopleId=c.peopleId "
@@ -401,10 +404,10 @@ public class LicenseFacadeImpl implements LicenseFacade {
                 + "LEFT JOIN c.position po "
                 + "LEFT JOIN c.dependency de "
                 + "LEFT JOIN de.type dt "
-                + "LEFT JOIN License li ON li.worker.id=c.peopleId AND li.type='V' AND li.codMovi>=20 "
-                + "WHERE c.active=1 AND c.canceled=0 AND NOT de.name IS NULL AND em.laborRegimeId "
+                + "LEFT JOIN License li ON li.worker.id=c.peopleId AND li.type='V' AND li.codMovi>='20' "
+                + "WHERE c.active=True AND c.canceled=False AND NOT de.name IS NULL AND em.laborRegimeId "
                 + "IN  " + labor
-                + " AND em.canceled=0 "
+                + " AND em.canceled=False "
                 + "group by pn.code,pn.fullName,pn.id,em.incomeDate,de.id,dt.name,de.name,po.name\n"
                 + "ORDER BY de.id,pn.fullName").getResultList();
         Calendar c = Calendar.getInstance();

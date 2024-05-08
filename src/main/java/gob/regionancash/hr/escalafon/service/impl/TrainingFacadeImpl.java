@@ -12,7 +12,7 @@ import gob.regionancash.hr.model.Employee;
 
 import java.util.HashMap;
 
-import org.isobit.app.service.UserFacade;
+import org.isobit.app.service.UserService;
 import org.isobit.directory.model.Company;
 import org.isobit.directory.service.CompanyFacade;
 import org.isobit.util.XUtil;
@@ -24,7 +24,7 @@ public class TrainingFacadeImpl implements TrainingFacade {
     private EntityManager em;
 
     @Autowired
-    private UserFacade userFacade;
+    private UserService userFacade;
 
     @Override
     public List<EscCapacitacion> load(int first, int pageSize, String sortField, Map<String, Object> filters) {

@@ -10,7 +10,7 @@ import gob.regionancash.hr.escalafon.model.Merit;
 import gob.regionancash.hr.escalafon.service.MeritFacade;
 import gob.regionancash.hr.model.Employee;
 
-import org.isobit.app.service.UserFacade;
+import org.isobit.app.service.UserService;
 import org.isobit.util.XUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,7 +20,7 @@ public class MeritFacadeImpl implements MeritFacade {
     private EntityManager em;
 
     @Autowired
-    private UserFacade userFacade;
+    private UserService userFacade;
 
     @Override
     public List<Merit> load(int first, int pageSize, String sortField, Map<String, Object> filters) {

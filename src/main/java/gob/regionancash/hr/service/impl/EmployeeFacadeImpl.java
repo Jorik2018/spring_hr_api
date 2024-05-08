@@ -15,7 +15,7 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import org.isobit.app.X;
-import org.isobit.app.service.UserFacade;
+import org.isobit.app.service.UserService;
 import org.isobit.directory.model.CivilStatus;
 import org.isobit.directory.model.Company;
 import org.isobit.directory.model.Dependency;
@@ -43,7 +43,7 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
     private EntityManager em;
 
     @Autowired
-    private UserFacade userFacade;
+    private UserService userFacade;
 
     @Override
     public List<Employee> load(int first, int pageSize, String sortField, Map<String, Object> filters) {

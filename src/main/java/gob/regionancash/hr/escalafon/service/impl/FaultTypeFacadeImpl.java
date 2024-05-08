@@ -9,7 +9,7 @@ import jakarta.persistence.Query;
 import gob.regionancash.hr.escalafon.model.FaultType;
 import gob.regionancash.hr.escalafon.service.FaultTypeFacade;
 
-import org.isobit.app.service.UserFacade;
+import org.isobit.app.service.UserService;
 import org.isobit.util.XUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,7 +19,7 @@ public class FaultTypeFacadeImpl implements FaultTypeFacade{
     private EntityManager em;
 
     @Autowired
-    private UserFacade userFacade;
+    private UserService userFacade;
 
     @Override
     public List<FaultType> load(int first, int pageSize, String sortField, Map<String, Object> filters) {

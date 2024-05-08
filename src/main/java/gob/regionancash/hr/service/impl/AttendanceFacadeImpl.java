@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.isobit.app.X;
-import org.isobit.app.service.UserFacade;
+import org.isobit.app.service.UserService;
 import org.isobit.directory.model.Dependency;
 import org.isobit.directory.model.People;
 import org.isobit.util.XDate;
@@ -55,7 +55,7 @@ public class AttendanceFacadeImpl implements AttendanceFacade {
     private EntityManager em;
 
     @Autowired
-    private UserFacade userFacade;
+    private UserService userFacade;
 
     class AtendanseDetail {
 

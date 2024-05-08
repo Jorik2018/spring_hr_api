@@ -1,6 +1,5 @@
 package gob.regionancash.hr.service.impl;
-
-import org.isobit.app.service.UserFacade;
+import org.isobit.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import gob.regionancash.hr.service.RhFacade;
@@ -8,7 +7,7 @@ import gob.regionancash.hr.service.RhFacade;
 public class RhFacadeImpl implements RhFacade{
 
     @Autowired
-    private UserFacade userFacade;
+    private UserService userFacade;
 
     enum Perm {
         ACCESS_RH,

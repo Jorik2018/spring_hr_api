@@ -1,0 +1,13 @@
+2024.05.08 12:17:18 INFO  Database: jdbc:h2:file:/Users/ealarcop/Projects/java/spring/spring_hr_api/.metals/metals (H2 2.2)
+2024.05.08 12:17:18 WARN  Flyway upgrade recommended: H2 2.2.224 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.220.
+2024.05.08 12:17:18 INFO  Schema history table "PUBLIC"."flyway_schema_history" does not exist yet
+2024.05.08 12:17:18 INFO  Successfully validated 6 migrations (execution time 00:00.012s)
+2024.05.08 12:17:18 INFO  Creating Schema History table "PUBLIC"."flyway_schema_history" ...
+2024.05.08 12:17:18 INFO  Current version of schema "PUBLIC": << Empty Schema >>
+2024.05.08 12:17:18 INFO  Migrating schema "PUBLIC" to version "1 - Create tables"
+2024.05.08 12:17:18 INFO  Migrating schema "PUBLIC" to version "2 - Server discovery"
+2024.05.08 12:17:18 INFO  Migrating schema "PUBLIC" to version "3 - Jar symbols"
+2024.05.08 12:17:18 INFO  Migrating schema "PUBLIC" to version "4 - Fingerprints"
+2024.05.08 12:17:18 INFO  Migrating schema "PUBLIC" to version "5 - Jar type hierarchy"
+2024.05.08 12:17:18 INFO  Migrating schema "PUBLIC" to version "6 - Delete indices"
+2024.05.08 12:17:18 INFO  Successfully applied 6 migrations to schema "PUBLIC", now at version v6 (execution time 00:00.067s)

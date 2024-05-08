@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Map;
 import org.isobit.util.XFile;
 import org.isobit.util.XUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.MultipartBodyBuilder;
@@ -31,13 +33,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.BodyExtractors;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.buffer.DataBufferUtils;
 
 @RestController
 @RequestMapping("/license")
 public class LicenseFacadeREST {
+
+    @Value("${service.jreport}")
+    private String jreportPath;
 
     @Autowired
     private LicenseRepository licenseFacade;
@@ -162,37 +170,58 @@ public class LicenseFacadeREST {
         }
         params.put("data", m);
         MultipartBodyBuilder multiPart = new MultipartBodyBuilder();
-        multiPart.part("file", XFile.writeObject(new File(File.createTempFile("temp-file-name", ".tmp").getParentFile(), "data.jao"), params), MediaType.APPLICATION_OCTET_STREAM);
+        File file = XFile.writeObject(new File(File.createTempFile("temp-file-name", ".tmp").getParentFile(), "data.jao"),
+        params);
+        byte[] fileContent = Files.readAllBytes(file.toPath());
+        multiPart.part("file",
+                fileContent,
+                MediaType.APPLICATION_OCTET_STREAM);
         multiPart.part("template", template, MediaType.TEXT_PLAIN);
 
-        return WebClient.create("http://localhost/api/jreport/").post()
+        return WebClient.create(jreportPath).post()
                 .uri(UriComponentsBuilder.newInstance().path("").toUriString())
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData(multiPart.build()))
-                .retrieve()
-                .bodyToMono(byte[].class)
-                .map(bytes -> ResponseEntity.ok()
-                        .header("Content-Disposition", "attachment; filename=\"holidays." + params.get("-EXTENSION") + "\"")
-                        .body(bytes));
+                .exchangeToMono(response -> {
+                    if (response.statusCode().is2xxSuccessful()) {
+                        return DataBufferUtils.join(response.body(BodyExtractors.toDataBuffers()))
+                                .map(dataBuffer -> {
+                                    byte[] bytes = new byte[dataBuffer.readableByteCount()];
+                                    dataBuffer.read(bytes);
+                                    DataBufferUtils.release(dataBuffer);
+                                    return bytes;
+                                });
+                    } else {
+                        return Mono.error(new RuntimeException("Failed to download file: " + response.statusCode()));
+                    }
+                })
+                .map(fileBytes -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                    headers.setContentDispositionFormData("attachment", "holidays." + params.get("-EXTENSION"));
+                    return ResponseEntity.ok()
+                            .headers(headers)
+                            .body(fileBytes);
+                });
     }
-  /*  
-    public Response toResponse(InputStream is2, String filename) {
-        return Response.ok((StreamingOutput) (java.io.OutputStream output) -> {
-            try {
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                int len;
-                byte[] buffer = new byte[4096];
-                while ((len = is2.read(buffer, 0, buffer.length)) != -1) {
-                    output.write(buffer, 0, len);
-                }
-                output.flush();
-                is2.close();
-            } catch (IOException e) {
-                throw new WebApplicationException("File Not Found !!", e);
-            }
-        }, MediaType.APPLICATION_OCTET_STREAM)
-                .header("content-disposition", "attachment; filename =" + filename
-                ).build();
-    }
-*/
+    /*
+     * public Response toResponse(InputStream is2, String filename) {
+     * return Response.ok((StreamingOutput) (java.io.OutputStream output) -> {
+     * try {
+     * ByteArrayOutputStream baos = new ByteArrayOutputStream();
+     * int len;
+     * byte[] buffer = new byte[4096];
+     * while ((len = is2.read(buffer, 0, buffer.length)) != -1) {
+     * output.write(buffer, 0, len);
+     * }
+     * output.flush();
+     * is2.close();
+     * } catch (IOException e) {
+     * throw new WebApplicationException("File Not Found !!", e);
+     * }
+     * }, MediaType.APPLICATION_OCTET_STREAM)
+     * .header("content-disposition", "attachment; filename =" + filename
+     * ).build();
+     * }
+     */
 }

@@ -11,7 +11,7 @@ import gob.regionancash.hr.escalafon.service.DemeritFacade;
 import gob.regionancash.hr.model.Employee;
 
 import org.isobit.app.X;
-import org.isobit.app.service.UserFacade;
+import org.isobit.app.service.UserService;
 import org.isobit.directory.model.People;
 import org.isobit.util.XUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 public class DemeritFacadeImpl implements DemeritFacade {
 
     @Autowired
-    private UserFacade userFacade;
+    private UserService userFacade;
 
     @PersistenceContext
     private EntityManager em;

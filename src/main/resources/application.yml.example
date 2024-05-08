@@ -12,3 +12,5 @@ spring:
     hibernate:
       ddl-auto: none
       #ddl-auto: update
+service:
+  jreport: http://localhost/api/jreport

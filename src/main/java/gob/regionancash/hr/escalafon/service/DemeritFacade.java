@@ -13,8 +13,8 @@ public interface DemeritFacade{
 
     Demerit find(Object id);
 
-    public List getTypeList();
+    public List<Demerit> getTypeList();
     
-    public List getFaultTypeList();
+    public List<Demerit> getFaultTypeList();
 
 }

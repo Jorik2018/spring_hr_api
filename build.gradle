@@ -32,7 +32,9 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
-	implementation files('C:/projects/java/spring/java_isobit/build/libs/isobit.jar')
+implementation 'org.eclipse.microprofile.jwt:microprofile-jwt-auth-api:2.1'
+	//implementation files('C:/projects/java/spring/java_isobit/build/libs/isobit.jar')
+	implementation files('/Users/ealarcop/Projects/java/java_isobit/build/libs/isobit.jar')
 }
 
 tasks.named('test') {

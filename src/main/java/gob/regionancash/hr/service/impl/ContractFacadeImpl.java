@@ -12,7 +12,7 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import org.isobit.app.X;
 import org.isobit.app.model.User;
-import org.isobit.app.service.UserFacade;
+import org.isobit.app.service.UserService;
 import org.isobit.directory.model.Company;
 import org.isobit.directory.model.DependencyType;
 import org.isobit.directory.model.DocumentType;
@@ -56,7 +56,7 @@ public class ContractFacadeImpl implements ContractFacade {
     private EntityManager em;
 
     @Autowired
-    private UserFacade userFacade;
+    private UserService userFacade;
 
     @Autowired
     private PeopleFacade peopleFacade;

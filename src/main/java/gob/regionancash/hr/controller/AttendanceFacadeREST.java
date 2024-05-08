@@ -8,7 +8,6 @@ import java.util.Map;
 import gob.regionancash.hr.model.Attendance;
 import gob.regionancash.hr.model.DevicePeople;
 import gob.regionancash.hr.repository.AttendanceRepository;
-import gob.regionancash.hr.service.AttendanceFacade;
 import gob.regionancash.zk.LogData;
 import reactor.core.publisher.Mono;
 
@@ -17,8 +16,6 @@ import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.util.Calendar;
 import java.util.Date;
-import org.isobit.app.X;
-import org.isobit.util.XFile;
 import org.isobit.util.XUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

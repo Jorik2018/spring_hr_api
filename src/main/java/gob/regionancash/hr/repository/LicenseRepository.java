@@ -10,6 +10,6 @@ import gob.regionancash.hr.model.License;
 import gob.regionancash.hr.service.LicenseFacade;
 
 public interface LicenseRepository
-    extends JpaRepository<License,Integer>,LicenseFacade{
+    extends JpaRepository<License,Integer>, LicenseFacade{
 
 }

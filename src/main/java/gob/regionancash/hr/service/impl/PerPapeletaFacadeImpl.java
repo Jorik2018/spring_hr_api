@@ -11,7 +11,7 @@ import gob.regionancash.hr.service.PerPapeletaFacade;
 
 import java.util.Date;
 import org.isobit.app.X;
-import org.isobit.app.service.UserFacade;
+import org.isobit.app.service.UserService;
 import org.isobit.util.AbstractFacade;
 import org.isobit.util.XDate;
 import org.isobit.util.XUtil;
@@ -24,7 +24,7 @@ public class PerPapeletaFacadeImpl implements PerPapeletaFacade {
     private EntityManager em;
 
     @Autowired
-    private UserFacade userFacade;
+    private UserService userFacade;
 
     @Override
     public List<Ballot> load(int first, int pageSize, String sortField, Map<String, Object> filters) {
