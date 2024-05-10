@@ -11,3 +11,6 @@
 2024.05.08 12:17:18 INFO  Migrating schema "PUBLIC" to version "5 - Jar type hierarchy"
 2024.05.08 12:17:18 INFO  Migrating schema "PUBLIC" to version "6 - Delete indices"
 2024.05.08 12:17:18 INFO  Successfully applied 6 migrations to schema "PUBLIC", now at version v6 (execution time 00:00.067s)
+2024.05.09 12:25:44 INFO  Shutting down server
+2024.05.09 12:25:44 INFO  shutting down Metals
+2024.05.09 12:25:44 INFO  Exiting server
