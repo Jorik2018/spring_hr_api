@@ -62,7 +62,7 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
                 + "LEFT JOIN Contract co ON co.peopleId=o.peopleId AND co.active=1 AND co.canceled = FALSE "
                 + "LEFT JOIN Dependency de ON de.id=co.dependencyId "
                 + "LEFT JOIN LaborRegime lr ON lr.id=o.laborRegimeId "
-                + "WHERE o.canceled=0 AND (NOT o.laborRegimeId=7 OR o.laborRegimeId IS NULL) "
+                + "WHERE o.canceled=FALSE AND (NOT o.laborRegimeId=7 OR o.laborRegimeId IS NULL) "
                 + (workModality != null ? " AND (o.workModality IN :workModality "+(workModality.contains("N")?" OR o.workModality IS NULL ":"")+") " : "")
                 + (laborRegime != null ? " AND o.laborRegimeId IN :laborRegime " : "")
                 + (pensionSystem != null ? " AND o.pensionSystem.id IN :pensionSystem " : "")
