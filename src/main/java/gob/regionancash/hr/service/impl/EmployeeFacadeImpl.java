@@ -59,7 +59,7 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
         String sql;
         ql.add(em.createQuery("SELECT o,p,d,de,lr.name,co "
                 + (sql = "FROM Employee o JOIN o.people p JOIN p.documentType d "
-                + "LEFT JOIN Contract co ON co.peopleId=o.peopleId AND co.active=1 AND co.canceled = FALSE "
+                + "LEFT JOIN Contract co ON co.peopleId=o.peopleId AND co.active=TRUE AND co.canceled = FALSE "
                 + "LEFT JOIN Dependency de ON de.id=co.dependencyId "
                 + "LEFT JOIN LaborRegime lr ON lr.id=o.laborRegimeId "
                 + "WHERE o.canceled=FALSE AND (NOT o.laborRegimeId=7 OR o.laborRegimeId IS NULL) "
