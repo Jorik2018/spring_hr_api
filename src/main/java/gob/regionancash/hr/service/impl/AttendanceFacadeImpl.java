@@ -472,15 +472,17 @@ public class AttendanceFacadeImpl implements AttendanceFacade {
     public Object getReport(Integer dependencyId, Date from, Date to, Map params) {
         Date today = new Date();
         String boss = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH");
+        
         try {
-            Object[] row = em.createQuery("SELECT p.fullName,d FROM Contract c JOIN c.people p,Dependency d WHERE c.active=1 AND d.positionId=c.positionId AND c.dependencyId=d.id", Object[].class)
+            Object[] row = em.createQuery("SELECT p.fullName,d FROM Contract c JOIN c.people p,Dependency d WHERE c.active=TRUE AND d.positionId=c.positionId AND c.dependencyId=d.id", Object[].class)
                     .setMaxResults(1)
                     .getSingleResult();
             boss = (row[0] + " / " + ((Dependency) row[1]).getFullName()).toUpperCase();
         } catch (NoResultException nre) {
 
         }
-        
+        System.out.println("row="+boss);
         Map licenseTypeMap = new HashMap();
         TimeTable timeTable = new TimeTable();
         licenseTypeMap.put("O", "ONOMASTICO");
@@ -529,26 +531,10 @@ public class AttendanceFacadeImpl implements AttendanceFacade {
         }
         Object people = params.get("people");
         
-        System.out.println("people==============="+people);
+        System.out.println("people="+people+";from="+dateFormat.format(from)+";to="+dateFormat.format(to));
         Map<Object, AssistSummary> assistMainSummaryMap = new HashMap();
         //Si no hay contrato no saldra el trabajador en el reporte
-        Query q = em.createQuery(/*people != null?"SELECT DISTINCT pn,po,lr.name,de,co,em.workModality FROM People pn "
-                + "LEFT JOIN Employee em ON em.peopleId=pn.id "
-                + "LEFT JOIN Contract co ON co.people=pn "
-                + "LEFT JOIN co.position po "
-                + "LEFT JOIN co.dependency de "
-                + "LEFT JOIN de.type td "
-                
-                //+ "JOIN DevicePeople dp ON dp.peopleId=em.peopleId "
-                + "LEFT JOIN LaborRegime lr ON lr.id=em.laborRegimeId "
-                + "WHERE "
-                + " co.canceled=0 AND em.canceled=0 "
-                + "AND co.fechaIni<=:to "
-                + "AND ((co.fechaFin is null AND co.active=1) OR co.fechaFin>=:from) "
-                + " AND co.peopleIdLong IN :peopleId "
-                + "ORDER BY pn.fullName":*/
-                
-                
+        Query q = em.createQuery(
                 "SELECT DISTINCT pn,po,lr.name,de,co,em.workModality FROM Employee em "
                 + "JOIN People pn ON em.peopleId=pn.id "
                 + "LEFT JOIN LaborRegime lr ON lr.id=em.laborRegimeId "
@@ -556,10 +542,10 @@ public class AttendanceFacadeImpl implements AttendanceFacade {
                 + "LEFT JOIN co.position po "
                 + "LEFT JOIN co.dependency de "
                 + "LEFT JOIN de.type td "
-                + "WHERE em.canceled=0 "
+                + "WHERE em.canceled=FALSE "
                         
-                + "AND ("+(people != null ?" co.id is null OR":"")+" (co.canceled=0 AND co.fechaIni<=:to "
-                + "AND ((co.fechaFin is null AND co.active=1) OR co.fechaFin>=:from))) "
+                + "AND ("+(people != null ?" co.id is null OR":"")+" (co.canceled=FALSE AND co.fechaIni<=:to "
+                + "AND ((co.fechaFin is null AND co.active=TRUE) OR co.fechaFin>=:from))) "
                         
                 + (people != null ? " AND em.peopleIdLong IN :peopleId " : 
                         
@@ -592,11 +578,13 @@ public class AttendanceFacadeImpl implements AttendanceFacade {
             peopleIdList.clear();
             List<Holiday> holidays;
             for (Holiday holiday : (holidays = em.createQuery("SELECT h FROM Holiday h WHERE h.date BETWEEN :from AND :to", Holiday.class)
-                    .setParameter("from", from)
-                    .setParameter("to", to)
+                    .setParameter("from", toLocalDate(from))
+                    .setParameter("to", toLocalDate(to))
                     .getResultList())) {
                 if (option < 3) {
-                    c.setTime(holiday.getDate());
+                    Date date = Date.from(holiday.getDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        
+                    c.setTime(date);
                     dayMonth = c.get(Calendar.DAY_OF_MONTH);
                     dayMonth = dayIndex.get(dayMonth);
                     if (dayMonth != null) {
@@ -651,6 +639,7 @@ public class AttendanceFacadeImpl implements AttendanceFacade {
                         assistMainSummary.setFullName(pe.getFullName());
                         if (dayOfWeek > 1 && dayOfWeek < 7) {
                             DaySummary daySummary = new DaySummary();
+                            daySummary.setCode(pe.getCode());
                             daySummary.setFullName(pe.getFullName());
                             daySummary.setDay(c.get(Calendar.DAY_OF_MONTH));
                             daySummary.setDayName(dayNameMap.get(dayOfWeek));
@@ -729,11 +718,13 @@ public class AttendanceFacadeImpl implements AttendanceFacade {
                         }
                     }
                 }*/
-                System.out.println("pe=" + pe);
+                //System.out.println("pe=" + pe);
                 peopleIdList.add(pe.getId().longValue());
             }
             for (Holiday holiday : holidays) {
-                c.setTime(holiday.getDate());
+                Date date = Date.from(holiday.getDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        
+                c.setTime(date);
                 if (option == 3) {
                     period = c.get(Calendar.YEAR) * 100 + c.get(Calendar.MONTH);
                     dayMonth = c.get(Calendar.DAY_OF_MONTH);
@@ -762,7 +753,7 @@ public class AttendanceFacadeImpl implements AttendanceFacade {
 
             if (!remoteEmployees.isEmpty()) {
                 for (Object[] remote : (List<Object[]>) em.createQuery("SELECT s.peopleIdLong,s.loginTime,s.logoutTime,s.accessDate "
-                        + "FROM RhSession s WHERE s.accessDate>=:from AND s.accessDate<=:to AND s.peopleIdLong IN :people ORDER BY s.peopleId")
+                        + "FROM Session s WHERE s.accessDate>=:from AND s.accessDate<=:to AND s.peopleIdLong IN :people ORDER BY s.peopleId")
                         .setParameter("from", from)
                         .setParameter("to", to)
                         .setParameter("people", remoteEmployees)
@@ -1074,6 +1065,7 @@ public class AttendanceFacadeImpl implements AttendanceFacade {
         if (option == 3) {
             list0.sort(comparator);
         }
+        System.out.println("=====556666666666");
         for (AssistSummary assistPeopleSummary : list0) {
             List<AssistSummary> list = new ArrayList(assistPeopleSummary.values());
             if (option != 3) {
@@ -1272,6 +1264,10 @@ public class AttendanceFacadeImpl implements AttendanceFacade {
                 "FECHA_FIN", sdf.format(to),
                 "MONTH", month,
                 "YEAR", "" + c.get(Calendar.YEAR));
+    }
+
+    private static LocalDate toLocalDate(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
 }

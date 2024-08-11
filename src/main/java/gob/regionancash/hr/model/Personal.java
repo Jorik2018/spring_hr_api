@@ -29,7 +29,6 @@ public class Personal implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 8)
-    @Column(name = "dni")
     private String dni;
     @Transient
     private People people;

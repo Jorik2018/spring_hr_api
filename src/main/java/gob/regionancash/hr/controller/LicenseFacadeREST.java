@@ -2,15 +2,10 @@ package gob.regionancash.hr.controller;
 
 import gob.regionancash.hr.model.License;
 import gob.regionancash.hr.repository.LicenseRepository;
-import gob.regionancash.hr.service.LicenseFacade;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,7 +18,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.MultipartBodyBuilder;
-import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
