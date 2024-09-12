@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 @RestController
-@RequestMapping("/api/crypto")
+@RequestMapping("/crypto")
 public class CryptoController {
 
     @PostMapping("/code-challenge")
