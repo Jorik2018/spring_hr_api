@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gob.regionancash.hr.dto.AssistSummary;
 import gob.regionancash.hr.dto.DaySummary;
 import gob.regionancash.hr.model.Attendance;
 import gob.regionancash.hr.model.DevicePeople;
@@ -17,6 +18,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import org.isobit.util.XUtil;
@@ -170,7 +172,10 @@ public class AttendanceFacadeREST {
         if (from == null) {
             from = c.getTime();
         }
-        //dependency=67
+        // dependency=67
+        if(option==4){
+            params.put("option", 3);
+        }
         params.putAll((Map) assistFacade.getReport(dependency, from, to, params));
         String template = "Matriz_Asistencia_A4_L";
         switch (option) {
@@ -179,7 +184,24 @@ public class AttendanceFacadeREST {
                 break;
             case 3:
                 template = "TardanzaDia";
+                break;
+            case 4:
+                template = "asistenciav1";
+                List<DaySummary> data = (List<DaySummary>) params.get("data");
+                params.put("data", data.stream().map((e) -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("fullName", e.getFullName());
+                    map.put("DNI", e.getCode());
+                    map.put("DAY", e.getDayName());
+                    map.put("DATE", e.getDate());
+                    map.put("INGRESO", e.getEntry());
+                    map.put("REFRIGERIO", e.getBreaking());
+                    map.put("SALIDA", e.getOut());
+                    map.put("OBSERVACIONES", e.getRemark());
+                    return map;
+                }).toList());
         }
+        System.out.println("template="+template);
         params.put("template", template);
         String fileName = "data.jao";
         WebClient webClient = WebClient.create("https://web.regionancash.gob.pe");
@@ -196,11 +218,11 @@ public class AttendanceFacadeREST {
                 .body(BodyInserters.fromMultipartData(builder.build()))
                 .retrieve()
                 .bodyToMono(byte[].class)
-                //.bodyToMono(InputStream.class)
+                // .bodyToMono(InputStream.class)
                 .map(responseBody -> {
                     String extension = String.valueOf(params.get("-EXTENSION"));
                     String filename = "attendance." + extension;
-                    byte[] bytes = responseBody;//readAllBytes(responseBody);
+                    byte[] bytes = responseBody;// readAllBytes(responseBody);
                     HttpHeaders headers = new HttpHeaders();
                     headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
                     headers.setContentDispositionFormData(filename, filename);
@@ -279,47 +301,54 @@ public class AttendanceFacadeREST {
                 writer.println(String.join(",", headers));
                 for (DaySummary e : l) {
                     String[] row = {
-                        escapeCsv(e.getFullName()),
-                        escapeCsv(e.getCode()),
-                        escapeCsv(e.getDayName()),
-                        escapeCsv(e.getDate()),
-                        escapeCsv(e.getEntry()),
-                        escapeCsv(e.getBreaking()),
-                        escapeCsv(e.getOut()),
-                        escapeCsv(e.getRemark())
+                            escapeCsv(e.getFullName()),
+                            escapeCsv(e.getCode()),
+                            escapeCsv(e.getDayName()),
+                            escapeCsv(e.getDate()),
+                            escapeCsv(e.getEntry()),
+                            escapeCsv(e.getBreaking()),
+                            escapeCsv(e.getOut()),
+                            escapeCsv(e.getRemark())
                     };
-                    
+
                     writer.println(String.join(",", row));
                 }
                 writer.flush();
             };
-            //return new ResponseEntity(stream, HttpStatus.OK);
+            // return new ResponseEntity(stream, HttpStatus.OK);
             return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=report.csv")
-            .contentType(MediaType.APPLICATION_OCTET_STREAM)
-            .body(stream);
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=report.csv")
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(stream);
         }
         // return l;
-        /*return l.stream().map(e -> {
-            Map<String, Object> map = new HashMap<>();
-            map.put("FULLNAME", e.getFullName());
-            map.put("DNI", e.getCode());
-            map.put("DAY", e.getDayName());
-            map.put("DATE", e.getDate());
-            map.put("INGRESO", e.getEntry());
-            map.put("REFRIGERIO", e.getBreaking());
-            map.put("SALIDA", e.getOut());
-            map.put("OBSERVACIONES", e.getRemark());
-            return map;
-        }).toList();*/
+        /*
+         * return l.stream().map(e -> {
+         * Map<String, Object> map = new HashMap<>();
+         * map.put("FULLNAME", e.getFullName());
+         * map.put("DNI", e.getCode());
+         * map.put("DAY", e.getDayName());
+         * map.put("DATE", e.getDate());
+         * map.put("INGRESO", e.getEntry());
+         * map.put("REFRIGERIO", e.getBreaking());
+         * map.put("SALIDA", e.getOut());
+         * map.put("OBSERVACIONES", e.getRemark());
+         * return map;
+         * }).toList();
+         */
         return null;
     }
+
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
     private String escapeCsv(Object o) {
         if (o == null) {
             return "";
+        }else if(o instanceof Date){
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            return formatter.format(o);
         }
-        String value=o.toString();
+        String value = o.toString();
         String escapedValue = value.replace("\"", "\"\""); // Escape double quotes
         if (value.contains(",") || value.contains("\"") || value.contains("\n")) {
             escapedValue = "\"" + escapedValue + "\""; // Wrap in quotes if necessary
