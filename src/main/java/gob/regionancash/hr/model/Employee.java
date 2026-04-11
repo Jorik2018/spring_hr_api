@@ -10,7 +10,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.Setter;
 
 @Entity
 @Table(name = "rh_employee")
@@ -18,6 +17,7 @@ import lombok.Setter;
 public class Employee implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_esc")
@@ -27,29 +27,32 @@ public class Employee implements Serializable {
     @NotNull
     @Column(name = "id_estado")
     private Short statusId = 1;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_dir")
     private int peopleId;
+    
     @Column(name = "id_dir", insertable = false, updatable = false)
     private long peopleIdLong;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "employee_type_id")
-    private Short typeId = 1;
+    private Integer typeId = 1;
+
     @Basic(optional = false)
     @Column(name = "fecha_ing")
     @Temporal(TemporalType.DATE)
     private Date incomeDate;
+    
     @Basic(optional = false)
-    @Column(name = "condicion")
     private Short condicion;
+    
     @Size(max = 25)
-    @Column(name = "ruc")
     private String ruc;
     
     @Size(max = 100)
-    @Column(name = "especialidad")
     private String especialidad;
     
     @Size(max = 20)
@@ -109,6 +112,7 @@ public class Employee implements Serializable {
     
     @Transient
     private String laborRegimeName;
+
     @Column(name = "user_id")
     private Integer userId;
     

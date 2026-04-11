@@ -189,7 +189,7 @@ private Mono<String> getUploadDir() {
             entity.setStatusId(entity.getStatus().getId());
         }
         if (entity.getTypeId() == null) {
-            entity.setTypeId((short) 1);
+            entity.setTypeId(1);
         }
         if (entity.getStatusId() == null) {
             entity.setStatusId((short) 1);

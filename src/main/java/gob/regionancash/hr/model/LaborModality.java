@@ -15,7 +15,7 @@ import lombok.Data;
 @Entity
 @Table(name = "modalidad_laboral")
 @Data
-public class ModLaboral implements Serializable {
+public class LaborModality implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -38,6 +38,6 @@ public class ModLaboral implements Serializable {
 
     @JoinColumn(name = "tipo_trab", referencedColumnName = "tipo_trab", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private TipoTrabajador tipoTrabajador;
+    private TipoTrabajador employeeType;
 
 }

@@ -24,6 +24,7 @@ import org.isobit.util.AbstractFacade;
 import org.isobit.util.XDate;
 import org.isobit.util.XMap;
 import org.isobit.util.XUtil;
+import org.springframework.stereotype.Service;
 
 import gob.regionancash.hr.escalafon.model.Demerit;
 import gob.regionancash.hr.escalafon.model.EscCapacitacion;
@@ -45,6 +46,7 @@ import gob.regionancash.hr.model.EscTipoPersonal;
 import gob.regionancash.hr.model.LicensePeople;
 import gob.regionancash.hr.service.EscPersonalFacade;
 
+@Service
 public class EscPersonalFacadeImpl implements EscPersonalFacade {
 
     @PersistenceContext
@@ -72,12 +74,6 @@ public class EscPersonalFacadeImpl implements EscPersonalFacade {
         }
     }
 
-    enum Perm {
-        ACCESS_PERSONAL,
-        ACCESS_PLANILLA,
-        ACCESS_CONTROL_PERSONAL,
-        ACCESS_REMUNERACIONES
-    };
 
     @Override
     public List<Employee> load(int first, int pageSize, String sortField, Map<String, Object> filters) {
@@ -298,71 +294,6 @@ public class EscPersonalFacadeImpl implements EscPersonalFacade {
         return q.getResultList();
     }
 
-    private class Module {
-
-        /*
-        @Override
-        public void addMenu(List<Object[]> menuList) {
-            menuList.add(new Object[]{Perm.ACCESS_PERSONAL, new MenuFacade.Tree("Recursos Humanos", "", "/admin/rh", "/resources/images/rh.png"), new Object[][]{
-                {null, "Operación", null, null, null, null, new Object[][]{
-                    {"/admin/rh/escalafon/List.xhtml", "Personal", null, null, null, null, null},
-                    //                    {"/admin/rh/personal/", "Personal", null, null, null, null, null},
-                    {"-"},
-                    {"/faces/rh/marcacion/List.xhtml", "Marcaciones de Asistencia", null, null, null, null, null},
-                    {"/faces/rh/papeleta/List.xhtml", "Papeletas de Salida", null, null, null, null, null},
-                    {"-"},
-                    {"/faces/rh/planilla/List.xhtml", "Planillas de Trabajadores y Pensionistas", null, null, null, null, null},
-                    {"/faces/rh/htareo/List.xhtml", "Hoja de tareo", null, null, null, null, null},
-                    {"-"},
-                    {"/faces/rh/planilla/List.xhtml", "Consolidado Resumen de Planillas", null, null, null, null, null}
-                }},
-                {null, "Reportes", null, null, null, null, new Object[][]{
-                    {"/faces/rh/report/marcacionIngresoSalida.xhtml", "Marcación de Ingreso y Salida de Personal", null, null, null, null, null},
-                    {"/faces/rh/report/hd.xhtml", "Constancia de Haberes y Descuentos", null, null, null, null, null},
-                    {"/faces/rh/report/marcacionDiaria.xhtml", "Reporte Diario de Marcaciones", null, null, null, null, null},
-                    {"/admin/rh/report/marcacionMensualTrabajador.xhtml", "Marcacion Mensual por Trabajador", null, null, null, null, null},
-                    {"-"},
-                    {"/faces/rh/report/tardanzaAdministrativo.xhtml", "Resumen Mensual de Tardanzas [Administrativo]", null, null, null, null, null},
-                    {"/faces/rh/report/tardanza-vigilante", "Resumen Mensual de Tardanzas [Vigilancia]", null, null, null, null, null},
-                    {"-"},
-                    {"/faces/rh/report/papeleta.xhtml", "Reporte Mensual de Papeletas de Salida", null, null, null, null, null},
-                    {"-"},
-                    {"/faces/rh/report/resumenPlus.xhtml", "Resumen mensual Plus", null, null, null, null, null},
-                    {"/admin/rh/report/resumen-afp", "Resumen Mensual de Descuentos de AFP", null, null, null, null, null},
-                    {"/admin/rh/report/resumen-gastos", "Resumen Mensual de Gasto en Planillas", null, null, null, null, null},
-                    {"-"},
-                    {"/faces/rh/report/personalActivo.xhtml", "Relación de Personal Activo", null, null, null, null, null},
-                    {"/admin/rh/report/estadistica-remuneracion", "Estadística Mensual de Remuneraciones", null, null, null, null, null},
-                    {"-"},
-                    {"/admin/rh/report/onomastico", "Relación Mensual de Onomásticos", null, null, null, null, null}
-                }},
-                {null, "Utilitarios", null, null, null, null, new Object[][]{
-                    {"/faces/rh/pdt/Interface.xhtml", "Interface PDT", null, null, null, null, null}
-                }},
-                {null, "Tablas", null, null, null, null, new Object[][]{
-                    {"/faces/personal/nivelRemunerativo/List.xhtml", "Niveles Remunerativos", null, null, null, null, null},
-                    {"/faces/personal/concepto/List.xhtml", "Conceptos", null, null, null, null, null},
-                    {"/faces/personal/personalDscto/List.xhtml", "Cargos Funcionales", null, null, null, null, null},
-                    {"-"},
-                    {"/faces/personal/horario/List.xhtml", "Horarios de Marcaciones", null, null, null, null, null},
-                    {"/faces/personal/turnoVigilante/List.xhtml", "Turnos de Vigilantes", null, null, null, null, null},
-                    {"-"},
-                    {"/faces/personal/horario/List.xhtml", "Horarios de Marcaciones", null, null, null, null, null},
-                    {"/faces/personal/personalDscto/List.xhtml", "Afectaciones por Trabajador", null, null, null, null, null},
-                    {"/faces/personal/afectacion/List.xhtml", "Afectaciones por Régimen", null, null, null, null, null},
-                    {"/faces/personal/afectacion/List.xhtml", "Tabla Salarial - Construcción Civil", null, null, null, null, null}
-                }},
-                {null, "Herramientas", null, null, null, null, new Object[][]{
-                    {"/faces/personal/pdt/Interface.xhtml", "Interfaz PDT 601 - Planillas de Obras", null, null, null, null, null},
-                    {"/faces/personal/report/onomastico.xhtml", "Interfaz Altas y Bajas T-Registro", null, null, null, null, null},
-                    {"/faces/personal/report/onomastico.xhtml", "Verificación de Identificación de Personal de Obras", null, null, null, null, null},
-                    {"/faces/personal/interfaceT/List.xhtml", "Impresión de cheques SIAF", null, null, null, null, null}
-                }}
-            }
-            });
-        }
-         */
-    }
     /*
     
      Map m=(Map) ((Object[])metadata.get(6))[1];

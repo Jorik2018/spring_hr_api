@@ -26,6 +26,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'com.opencsv:opencsv:5.7.1'
+	implementation 'com.google.code.gson:gson:2.10.1'
+	implementation 'com.itextpdf:itextpdf:5.5.13.3'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	runtimeOnly 'jakarta.ejb:jakarta.ejb-api:4.0.1'
@@ -34,7 +37,7 @@ dependencies {
 	testImplementation 'io.projectreactor:reactor-test'
 	implementation 'org.eclipse.microprofile.jwt:microprofile-jwt-auth-api:2.1'
 	//implementation files('C:/projects/java/spring/java_isobit/build/libs/isobit.jar')
-	implementation files('/Users/ealarcop/Projects/java/java_isobit/build/libs/isobit.jar')
+	implementation files('E:/projects/java/java_isobit/build/libs/isobit.jar')
 }
 
 tasks.named('test') {

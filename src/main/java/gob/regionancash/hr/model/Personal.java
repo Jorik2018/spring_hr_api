@@ -146,7 +146,7 @@ public class Personal implements Serializable {
 //    private ELocal local;
     @JoinColumn(name = "mod_laboral", referencedColumnName = "mod_laboral")
     @ManyToOne
-    private ModLaboral modLaboral;
+    private LaborModality modLaboral;
 //    @JoinColumns({
 //        @JoinColumn(name = "tipo_trab", referencedColumnName = "tipo_trab", insertable = false, updatable = false)
 //        ,
@@ -553,11 +553,11 @@ public class Personal implements Serializable {
         this.codCts = codCts;
     }
 
-    public ModLaboral getModLaboral() {
+    public LaborModality getModLaboral() {
         return modLaboral;
     }
 
-    public void setModLaboral(ModLaboral modLaboral) {
+    public void setModLaboral(LaborModality modLaboral) {
         this.modLaboral = modLaboral;
     }
 

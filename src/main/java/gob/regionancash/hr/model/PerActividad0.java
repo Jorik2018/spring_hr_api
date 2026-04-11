@@ -87,7 +87,7 @@ public class PerActividad0 implements Serializable {
 
     @Override
     public String toString() {
-        return "edu.uns.hr.jpa.PerActividad0[ idActividad=" + idActividad + " ]";
+        return "edu.uns.hr.model.PerActividad0[ idActividad=" + idActividad + " ]";
     }
     
 }
